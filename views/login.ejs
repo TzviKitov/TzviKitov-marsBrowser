@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="javascripts/funcs.js"></script>
+    <title>Exercise 3 - Internet Programming Course template</title>
+
+</head>
+<body>
+<h1><%= title %></h1>
+<p>Welcome <%= title %> </p>
+
+<h2>Login</h2>
+<form>
+    <div class="mb-3">
+        <label for="emailInput" class="form-label">E-mail address</label>
+        <input type="text" class="form-control input" placeholder="your e-mail" id="emailInput">
+        <div class="text-danger errormessage"></div>
+    </div>
+    <div class="mb-3">
+        <label for="password1" class="form-label">Enter password</label>
+        <input type="password" class="form-control input" placeholder="at least 8 characters" id="password1">
+        <div class="text-danger errormessage"></div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<h2>Not registered yet? <a href="/register" >site registeration </a></h2>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+</body>
+</html>
