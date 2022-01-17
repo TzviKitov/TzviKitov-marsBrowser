@@ -1,30 +1,14 @@
 var express = require('express');
-const Cookies = require('cookies')
-
+//const {maxAge} = require("express-session/session/cookie");
 var router = express.Router();
+const apiController = require("../controllers/api");
 
-const keys = ['keyboard cat']
+router.post('/register', apiController.postRegister);
 
-var users =[{email : "zvitov1@gmail.com"}];
-var tempEmail = "";
-var cookies= null;
-router.post('/register', (req, res) => {
-    cookies = new Cookies(req, res, { keys: keys })
-    cookies.set('LastVisit', new Date().toISOString(), { signed: true, maxAge: 10*1000 });
-    console.log(req.body);
-    tempEmail = req.body.email;
-    let bool=users.find((user)=>user.email===tempEmail)===undefined;
-    tempEmail = "";
-    res.json(bool);
-});
-
-
-
-
-// router.get('/register', (req, res) => {
-//   res.redirect('/');
-// });
-
+router.get('/image/delete/:imgID', apiController.deleteImage);
+router.get('/allImages', apiController.getAllImages);
+router.post('/image', apiController.postImage);
+router.get('/allImages/delete', apiController.deleteAllImages);
 
 
 module.exports = router;

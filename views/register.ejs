@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>register</title>
+    <title>registration</title>
     <link rel='stylesheet' href='/stylesheets/style.css'/>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    <script src="javascripts/funcs.js"></script>
+    <script src="/javascripts/authenticationFuncs.js"></script>
     <title>Exercise 3 - Internet Programming Course template</title>
 
 </head>
 <body>
-<h1>register</h1>
-<p>Welcome to </p>
-<form action="/password" method="get" id="registerForm">
+
+<% if (message ==1) { %>
+    <h4>Too much time to register. Please enter your email and passwords within one minute</h4>
+<% } %>
+
+<% if (message ==2) { %>
+    <h4>Email address is busy. Please enter another address</h4>
+<% } %>
+
+
+<h1>website registration</h1>
+<form action="/register/password" method="post" id="registerForm">
     <div class="mb-3">
         <label for="emailInput" class="form-label">E-mail address</label>
         <input type="text" class="form-control input" placeholder="your e-mail" id="emailInput">
@@ -35,6 +44,7 @@
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+<h3> <a href="/" >Log in</a></h3>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
         crossorigin="anonymous"></script>

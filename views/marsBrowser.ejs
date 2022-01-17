@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="/javascripts/marsBrowserFunc.js"></script>
+    <!--    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1-->
+    <title>Exercise 3 - Internet Programming Course template</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="container my-5">
+                <div class="bg-image p-5 mb-5" style="background-image: url('/images/imgMars.jpg');">
+                    <div class="d-flex justify-content-center text-center">
+                        <div class="bg-white p-3">
+                            <h2>Mars images browser</h2>
+                            <p>Browse NASA Mars images and save your preferred ones.</p>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">whom am i
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center text-center my-5" >
+        <h4>welcome <%= name %>  </h4>
+       <a href= "/logged/marsBrowser/logout" class="btn btn-outline-danger ms-2">Logout</a>
+    </div>
+
+    <div class="row d-none" id="loadingGif">
+        <div class="col position-relative">
+            <img class="position-absolute top-50 start-50 translate-middle" src='/images/loading-buffering.gif'
+                 alt="...">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6 mb-2">
+            <div class="text-dark bg-opacity-25 bg-info bg-gradient p-1 mb-2"><h2>Search for images:</h2></div>
+
+            <form id="searchForm">
+                <div class="mb-3">
+                    <label for="dateInput" class="form-label">Date (YYYY-MM-DD) or Sol</label>
+                    <input type="text" class="form-control input" id="dateInput">
+                    <div class="text-danger errormessage"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="SelectRoverInput" class="form-label">Select Rover:</label>
+                    <select class="form-select input" aria-label="Default select example" id="SelectRoverInput">
+                        <option selected value="">Choose a rover</option>
+                        <option value="curiosity">Curiosity</option>
+                        <option value="opportunity">Opportunity</option>
+                        <option value="spirit">Spirit</option>
+                    </select>
+                    <div class="text-danger errormessage"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="SelectCameraInput" class="form-label input">Select Camera:</label>
+                    <select class="form-select" aria-label="Default select example" id="SelectCameraInput">
+                        <option selected value="">choose a camera</option>
+                        <option value="fhaz">FHAZ</option>
+                        <option value="rhaz">RHAZ</option>
+                        <option value="mast">MAST</option>
+                        <option value="chemcam">CHEMCAM</option>
+                        <option value="mahli">MAHLI</option>
+                        <option value="mardi">MARDI</option>
+                        <option value="navcam">NAVCAM</option>
+                        <option value="pancam">PANCAM</option>
+                        <option value="minites">MINITES</option>
+                    </select>
+                    <div class="text-danger errormessage"></div>
+                </div>
+                <button type="submit" class="btn btn-outline-info">search</button>
+                <button type="reset" class="btn btn-outline-info" id="clearBtn">clear</button>
+            </form>
+        </div>
+        <div class="col-12 col-md-6 mb-2" id="savedShow">
+            <div class="text-blue bg-opacity-10 bg-primary bg-gradient p-1 mb-2 text-blue"><h2>Saved images:</h2>
+            </div>
+            <button type="button" class="btn btn-outline-danger" id="deleteSavesBtn">Delete all</button>
+            <button class="btn btn-outline-info" id="startSlideBtn">Start slide show</button>
+            <button class="btn btn-outline-info" id="stopSlideBtn">Stop slide show</button>
+            <ol>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-3">
+            <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner" id="carouselInner">
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class=" col-12 mb-4">
+                <div class=" text-dark bg-opacity-25 bg-info bg-gradient p-1 mb-2"><h2>Search results:</h2></div>
+                <div class=" text-danger errormessage" id="gError"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="imagesShow">
+    </div>
+</div>
+</div>
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Details</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                name: Tzvi Kitov<br/>E-mail: shalomki@edu.hac.ac.il<br/>ID: 038086781
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<form action="/" class="d-none" id="referLoginPage">
+
+    <button type="submit">search</button>
+</form>
+
+
+
+<button data-bs-toggle="modal" data-bs-target="#myModal2" class="d-none" id="duplicateMessage"></button>
+<div class="modal" id="myModal2">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-white bg-info bg-gradient">
+                <h4 class="modal-title">Information</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>This image is already saved!<br>
+                    Can't save again</p>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary  outline" data-bs-dismiss="modal">OK</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+</body>
+</html>
