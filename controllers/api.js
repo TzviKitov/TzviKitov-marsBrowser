@@ -1,61 +1,42 @@
 const db = require('../models');
 
+//
 exports.postRegister = (req, res) => {
-    res.cookie("LoginProcess", 'true', {maxAge: 60 * 1000});
+    res.cookie("LoginProcess", 'true', {maxAge: 60 * 1000});//Enable a cookie time limit
     let theEmail = req.body.email.trim();
     return db.User.findOne({
         where: {email: theEmail},
         attributes: ['email']
     }).then((email) => {
         console.log(email);
-        if (email) {
-            console.log('emailIsFree: false, ' + email);
+        if (email)
             res.send(false);
-        } else {
+         else {
             req.session.email = theEmail;
             req.session.firstName = req.body.firsName.trim();
             req.session.lastName = req.body.lastName.trim();
-            console.log('emailIsFree: true, ' + email);
             res.send(true);
         }
     })
-        .catch((err) => {
-            console.log('****Failed to check email duplication number 1', JSON.stringify(err));
-            err.error = 2; // some error code for client side
-            return res.redirect('/register');
+        .catch(() => {
+            return res.redirect('/register');////In the event of a database access error, the user will be redirected to the re-login page.
         });
 }
-const checkLogin=(req, res)=>{
-    if(!req.session.isLogged) {
-       return res.send('7');
-    }
-}
 
+//View all saved images for the logged in user (while loading the main page).
+// In the event of an access to the database error, the user will be disconnected from the site and will be directed to the login page
 exports.getAllImages= (req, res) => {
-    // if(!req.session.isLogged)
-    //     res.send('1');
-    //checkLogin(req, res);
-
-    return db.Image.findAll({where: {email: req.session.email}})//or req.ssasion.email????????????????????????????????????
+    return db.Image.findAll({where: {email: req.session.email}})
         .then((images) =>{
-            //if(images[0]?.email){
-            console.log( '******** row34 : ' +images);
-            res.send(images);//}
-            //else res.send(false);
+            res.send(images);
         })
         .catch((err) => {
-            console.log('There was an error get the images', JSON.stringify(err))
-            return res.send(err)
+            return res.redirect('/marsBrowser/logout');
         });
 }
+
+//Send a photo with all its details to save in the database. In the event of an access to the database error, the user will be disconnected from the site and will be directed to the login page
 exports.postImage= (req, res) => {
-   // const image = req.body;
-        //{ imgID, earth_date, sol, camera, rover, img_src} = req.body;
-    //image.email=req.session.email;
-    //checkLogin(req, res);
-    // if(!req.session.isLogged) {
-    //     return res.send('7');
-    // }else {
         console.log(req.body);
         return db.Image.create({
             earth_date: req.body.earth_date,
@@ -65,21 +46,17 @@ exports.postImage= (req, res) => {
             rover: req.body.name,
             img_src: req.body.img_src,
             email: req.session.email
+        }).then(()=> {
+            res.send(true);
         })
-            .then((img) => res.send(img))
             .catch((err) => {
-                console.log('*** error creating a image', JSON.stringify(err));
                 return res.redirect('/marsBrowser/logout');
             })
-   // }
 };
 
+//Deleting an image and its details from the database. In the event of an access to the database error, the user will be disconnected from the site and will be directed to the login page
 exports.deleteImage= (req,res)=>{
-    //checkLogin(req, res);
-    // if(!req.session.isLogged)
-    //     return res.send('7');
-    console.log('****** row 67'+req.params.imgID);
-    return db.Image.findOne({where: {email: req.session.email ,imgID: req.params.imgID}})//or req.ssasion.email????????????????????????????????????
+    return db.Image.findOne({where: {email: req.session.email ,imgID: req.params.imgID}})
         .then((image) => {
             console.log(image);
             image.destroy({force: true});
@@ -89,53 +66,22 @@ exports.deleteImage= (req,res)=>{
             res.send(true);
             }
         )
-        .catch((err) => {
-            console.log('There was an error delete the images', JSON.stringify(err))
-            return res.send(err)
+        .catch(() => {
+            return res.redirect('/marsBrowser/logout');
         })
 
 }
 
+//Delete all images and their details from the database. In the event of an access to the database error, the user will be disconnected from the site and will be directed to the login page
 exports.deleteAllImages=(req,res)=>{
-    //checkLogin(req, res);
-
     return db.Image.findAll({where: {email: req.session.email}})
         .then((images) => images.forEach((image)=>image.destroy({ force: true })))
         .then(() => {
                 res.send(true);
-                console.log('all images delate');
             }
         )
-        .catch((err) => {
-            console.log('There was an error delete the images', JSON.stringify(err))
-            return res.send(err)
+        .catch(() => {
+            return res.redirect('/marsBrowser/logout');
         })
 
 }
-
-//     .catch((isFree) => {
-//     console.log('17: ' + isFree)
-//     // console.log('****Failed to check email duplication number 1', JSON.stringify(err));
-//     // err.error = 1; // some error code for client side
-//     // return res.send(err)
-//     return isFree;
-// })
-//  .then((isFree) => {
-//if (email===null)
-//     req.session.email = theEmail;
-//     req.session.firsName = req.body.firsName;
-//     req.session.lastName = req.body.lastName;
-//     console.log('emailIsFree: true, ' + isFree);
-//     res.send(true);
-
-//        })
-
-
-//let emailIsBusy = users.find((user) => user.email === theEmail) === undefined;
-// if (!emailIsBusy) {
-//     req.session.email = theEmail;
-//     req.session.firsName = req.body.firsName;
-//     req.session.lastName = req.body.lastName;
-// }
-// console.log('emailIsBusy' + emailIsBusy);
-// res.json(emailIsBusy);

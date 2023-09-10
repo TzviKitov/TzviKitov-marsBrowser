@@ -1,85 +1,12 @@
-/* your JS code here */
 "use strict";
-/**
- * Module for all String validations and selections - before searching the images on the server
- * @type {{isManifestsDate: ((function(*, *=): ({isValid: boolean, message: string}))|*), hasDateFormat: (function(*=): {isValid, message: string}), isDate: (function(*=): {isValid, message: string}), isNotEmpty: (function(*): {isValid: boolean, message: string})}}
- */
-const validatorModule = (function () {
-    /**checks if a string is empty - assumes str is not null or undefined
-     * @param str - the input string
-     * @returns {{isValid: boolean, message: string}} - a boolean and message ins case validation failed
-     */
-    const isNotEmpty = function (str) {
-        return {
-            isValid: (str.length !== 0),
-            message: 'input is required here'
-        };
-    }
-    /**
-     * checks if a string of date or sol input is a format YYYY-MM-DD or a non negative number SOL
-     * @param str - the input string.  assumes str is not null or undefined
-     * @returns {{isValid: (boolean|boolean), message: string}} - a boolean and message ins case validation failed
-     */
-    const hasDateFormat = function (str) {
-        return {
-            isValid: (!isNaN(Number(str)) && Number(str) > -1) || /^[0-9]{4}(-[0-9]{2}){2}$/.test(str),
-            message: 'please enter a SOL number (Non-negative) or valid format date'
-        }
-    }
-    /**
-     * checks if a string of input date is a existing date (based on a JS DATE object)
-     * @param str - the input string.  assumes str is not null or undefined
-     * @returns {{isValid: boolean, message: string}} - a boolean and message ins case validation failed
-     */
-    const isDate = function (str) {
-        return {
-            isValid: !isNaN(Date.parse(str)),
-            message: 'please enter a Sol number ,or valid date'
-        }
-    }
-    /**
-     * checks if a string of input date is in accordance with manifests images dates of NASA server
-     * @param manifests - string date manifest Of the selected NASA rover assumes str is not null or undefined
-     * @param str the input string.  assumes str is not null or undefined
-     * @returns {{isValid: boolean, message: string}|{isValid: boolean}} - a boolean and message ins case validation failed (-if not valid, or only true if  is valid)
-     */
-    const isManifestsDate = function (manifests, str) {
-        if (!isNaN(Number(str)))
-            return {
-                isValid: Number(str) <= Number(manifests.max_sol),
-                message: `the mission you've selected requires a sol under ${manifests.max_sol}`
-            };
-        if (Number(Date.parse(str)) < Number(Date.parse(manifests.landing_date)))
-            return {
-                isValid: false,
-                message: `the mission you've selected requires a date after ${manifests.landing_date}`
-            };
-        if (Number(Date.parse(str)) > Number(Date.parse(manifests.max_date)))
-            return {
-                isValid: false,
-                message: `the mission you've selected requires a date before ${manifests.max_date}`
-            };
-        return {isValid: true};
-    }
-    return {
-        isNotEmpty: isNotEmpty,
-        hasDateFormat: hasDateFormat,
-        isDate: isDate,
-        isManifestsDate: isManifestsDate
-    }
-})();
 
 /**
- * A module that contains 2 classes: one manages the display of the images in HTML and the management of a list of saved images.
- * The second class contains an image with all its details and the view of an image saved in HTML.
+ * A module that Responsible for dealing with images: all different types of views in html,
+ * as well as managing all references to the database of saved images
  * @type {{}}
  */
 const imagesModule = (function () {
 
-
-//Detailed image department for saving and displaying the details
-
-//Returns a string to display the class image in HTML according to the class information
     const savedImgToHtmlUl = function (image) {
         return `
               <li class="saveImage"> 
@@ -89,14 +16,8 @@ const imagesModule = (function () {
     }
 
     /**
-     * Class for displaying an images in HTML and managing a list of saved images and carousel
-     * @type {classes.listManager}
-     */
-
-
-    /**
      * carousel string for display in HTML
-     * @param img  Image object received from NASA server - assumes img is not null or undefined
+     * @param image  Image object received from NASA server - assumes img is not null or undefined
      * @returns {string} Returns a string to display
      */
     const imgToHtmlCarousel = function (image) {
@@ -114,7 +35,7 @@ const imagesModule = (function () {
 
     /**
      *  card for display image in HTML
-     * @param img - Image object received from NASA server - assumes img is not null or undefined
+     * @param image - Image object received from NASA server - assumes img is not null or undefined
      * @returns {string} Returns a string to display
      */
     const imgToHtmlCard = function (image) {
@@ -137,7 +58,10 @@ const imagesModule = (function () {
             </div>`;
     }
 
-
+    /**
+     * A function that listens to the delete button ('x) of 1 images
+     * @param event
+     */
     const deleteListener = (event) => {
         let imgID = event.target.previousElementSibling.textContent;
         deleteImage(imgID);
@@ -145,14 +69,12 @@ const imagesModule = (function () {
     }
 
     /**
-     * Add an image to the DB of saved images
-     * @param img - Image object received from NASA server - assumes img is not null or undefined
+     * Add an image to the DB of saved images.
+     * In case an offline user tries to access the database (error code "7"), the function blocks access and redirects it to the login page
+     * @param image - Image object received from NASA server - assumes img is not null or undefined
      */
     const save = function (image) {
         let loadingElm = document.getElementById("loadingGif");
-
-        //this.savedList.push(new imagesModule.image(img));
-        console.log("11111111111111111111111111111111111");
         loadingElm.classList.remove('d-none');
         fetch("/logged/api/image", {
             method: "POST",
@@ -163,157 +85,130 @@ const imagesModule = (function () {
         }).then(function (response) {
             return response.json();
         }).then(function (res) {
-            if(res==7) {
-                console.log("******** in")
+            if(res==7)
                 document.getElementById("referLoginPage").submit();
-            }
-            console.log(res);
-
         }).catch(function (error) {
             error.json;
-            if(error==='1')
-                document.getElementById('referLoginPage').click();
-        }).finally(function () {
-            loadingElm.classList.add('d-none');
-        });
-    }
-
-
-    //const params = new URLSearchParams();
-    //             params.append('sol', dateInput.value.trim());
-    const deleteImage = function (imgID) {
-        // const params = new URLSearchParams();
-        //params.append('imgID', imgID.toString());
-        let loadingElm = document.getElementById("loadingGif");
-
-        loadingElm.classList.remove('d-none');
-        fetch("/logged/api/image/delete/" + imgID.toString())
-            .then(function (response) {
-                return response.json();
-            }).then(function (res) {
-            console.log(res);
-            if(res==7) {
-                console.log("******** in")
-                document.getElementById("referLoginPage").submit();
-            }
-        }).catch(function (error) {
-            //if(error==='1')
-              //  document.getElementById('referLoginPage').click();
-            console.log("not delete image");
-
-        }).finally(function () {
-            loadingElm.classList.add('d-none');
-        });
-    }
-
-    const deleteAllImage = function () {
-        let savedImagesOl = document.getElementsByClassName('saveImage');
-        let loadingElm = document.getElementById("loadingGif");
-
-        loadingElm.classList.remove('d-none');
-        fetch("/logged/api/allImages/delete")
-            .then(function (response) {
-                return response.json();
-            }).then(function (res) {
-            if(res==7) {
-                console.log("******** in")
-                document.getElementById("referLoginPage").submit();
-            }
-           else if (res)
-                for (let i = savedImagesOl.length - 1; i >= 0; i--)
-                    savedImagesOl[i].remove();
-        }).catch(function (error) {
-            error.json;
-            if(error==='1')
-                document.getElementById('referLoginPage').click();
-            console.log("not delete image");
-        }).finally(function () {
-            loadingElm.classList.add('d-none');
-        });
-
-    }
-
-    /**
-     * Finds if an identified image already exists in the saved image list
-     * @param myImgID - string of img id from text content of image HTML card
-     * @returns {*} - returns undefined if img not found (Or the image itself if found)
-     */
-    const search = function (myImgID) {
-        //return this.savedList.find((img) => img.id == myImgID);
-        let idNumbers = document.getElementsByClassName('imageId');
-        for (const id of idNumbers) {
-            //console.log("****11111  " + Number(id.textContent) + ',  ' + Number(myImgID));
-            if (Number(id.textContent) === Number(myImgID)) {
-                //console.log("****222222  " + Number(id.textContent) + ',  ' + Number(myImgID))
-                //console.log("****  same!!!!!!!!!!!!11");
-                return true;
-            }
-        }
-        return false;
-        //  .find((img) => img.children[1].textContent == myImgID)
-    }
-
-    const viewSavedImages = function () {
-        let savedShowElm = document.getElementById('savedShow');
-        let loadingElm = document.getElementById("loadingGif");
-
-        loadingElm.classList.remove('d-none');
-        fetch('/logged/api/allImages')
-            //.then(status)
-            // .then(function (response) {
-            .then(function (response) {
-                return response.json();
-            }).then(function (images) {
-            if(images==7) {
-                console.log("******** in")
-                document.getElementById("referLoginPage").submit();
-            }
-        else if (images)
-                for (const image of images) {
-                    savedShowElm.children[4].insertAdjacentHTML('beforeend', savedImgToHtmlUl(image));//ol element inr savedShowElm
-                    savedShowElm.children[4].lastElementChild.addEventListener('click', deleteListener);
-                }//console.log('');
-        }).catch(function (error) {
-            error.json;
-            if(error==='1')
-                document.getElementById('referLoginPage').click();
             console.log(error);
         }).finally(function () {
             loadingElm.classList.add('d-none');
         });
     }
 
-    const viewCarouselImages = function () {
-        let carouselElm = document.getElementById("carouselInner");
+    /**
+     * A function that addresses the server to delete a single image from the database.
+     * In case an offline user tries to access the database (error code "7"), the function blocks access and redirects it to the login page
+     * @param imgID from event-target.
+     */
+    const deleteImage = function (imgID) {
         let loadingElm = document.getElementById("loadingGif");
+        loadingElm.classList.remove('d-none');
+        fetch("/logged/api/image/delete/" + imgID.toString())
+            .then(function (response) {
+                return response.json();
+            }).then(function (res) {
+            if(res==7)
+                document.getElementById("referLoginPage").submit();
+        }).catch(function (error) {
+            error.json;
+        }).finally(function () {
+            loadingElm.classList.add('d-none');
+        });
+    }
 
+    /**
+     *The function handles the click of a button to delete all the saved images. It clears the page and turns to the server to clear the database.
+     In case an offline user tries to access the database (error code "7"), the function blocks access and redirects it to the login page.
+     */
+    const deleteAllImage = function () {
+        let savedImagesOl = document.getElementsByClassName('saveImage');
+        let loadingElm = document.getElementById("loadingGif");
+        loadingElm.classList.remove('d-none');
+        fetch("/logged/api/allImages/delete")
+            .then(function (response) {
+                return response.json();
+            }).then(function (res) {
+            if(res==7)
+                document.getElementById("referLoginPage").submit();
+           else if (res)
+                for (let i = savedImagesOl.length - 1; i >= 0; i--)
+                    savedImagesOl[i].remove();
+        }).catch(function (error) {
+            error.json;
+        }).finally(function () {
+            loadingElm.classList.add('d-none');
+        });
+    }
+
+    /**
+     * Finds if an identified image already exists in the saved image list
+     * @param myImgID - string of img id from text content of image HTML card
+     * @returns {*} - Returns a Boolean variable that indicates if the image is already on the page
+     */
+    const search = function (myImgID) {
+        let idNumbers = document.getElementsByClassName('imageId');
+        for (const id of idNumbers) {
+            if (Number(id.textContent) === Number(myImgID)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Displays the saved images of the user from the response received from the server (database), immediately after logging in to the site.
+     *  In case an offline user tries to access the database (error code "7"), the function blocks access and redirects it to the login page.
+     */
+    const viewSavedImages = function () {
+        let savedShowElm = document.getElementById('savedShow');
+        let loadingElm = document.getElementById("loadingGif");
         loadingElm.classList.remove('d-none');
         fetch('/logged/api/allImages')
-            //.then(status)
-            // .then(function (response) {
             .then(function (response) {
                 return response.json();
             }).then(function (images) {
-            if(images==7) {
-                console.log("******** in")
+            if(images==7)
                 document.getElementById("referLoginPage").submit();
-            }
+        else if (images)
+                for (const image of images) {
+                    savedShowElm.children[4].insertAdjacentHTML('beforeend', savedImgToHtmlUl(image));//ol element inr savedShowElm
+                    savedShowElm.children[4].lastElementChild.addEventListener('click', deleteListener);
+                }
+        }).catch(function (error) {
+            error.json;
+        }).finally(function () {
+            loadingElm.classList.add('d-none');
+        });
+    }
+    /**
+     * Displays in the carousel the saved images of the user from the answer received from the server (database).
+     * In case an offline user tries to access the database (error code "7"), the function blocks access and redirects it to the login page.
+     */
+    const viewCarouselImages = function () {
+        let carouselElm = document.getElementById("carouselInner");
+        let loadingElm = document.getElementById("loadingGif");
+        loadingElm.classList.remove('d-none');
+        fetch('/logged/api/allImages')
+            .then(function (response) {
+                return response.json();
+            }).then(function (images) {
+            if(images==7)
+                document.getElementById("referLoginPage").submit();
             else if (images)
-                for (let i = 0; i < images.length; i++) {          //Displays the carousel images from the data structure "listManager.savedList"
+                for (let i = 0; i < images.length; i++) {
                     carouselElm.insertAdjacentHTML('beforeend', imgToHtmlCarousel(images[i]));
                     if (i == 0)
                         carouselElm.firstElementChild.classList.add('active');
                 }
         }).catch(function (error) {
             error.json;
-            if(error==='1')
-                document.getElementById('referLoginPage').click();
-            console.log(error);
         }).finally(function () {
             loadingElm.classList.add('d-none');
         });
     }
-
+    /**
+     * Deletes the carousel photos from the page
+     */
    const  stopCarouselImages= function (){
        let carouselElm = document.getElementById("carouselInner");
         for (let i = carouselElm.children.length - 1; i >= 0; i--)
@@ -330,10 +225,7 @@ const imagesModule = (function () {
         imagesShowElm.insertAdjacentHTML('beforeend', imgToHtmlCard(image));
         image.imgID = image.id;
         let saveBtn = imagesShowElm.lastElementChild.firstElementChild.children[2].children[0];
-        //let imgID =image.id;
-        // Listening function, to the save button. If the image is not saved it will be saved in the list and displayed on the page, if already saved it will run the error message
         saveBtn.addEventListener('click', (ev) => {
-            // let imgID = ev.target.parentElement.parentElement.children[1].children[0].textContent; // the ID from the Of the image card you clicked on
             if (!search(image.id)) {
                 save(image);
                 savedShowElm.children[4].insertAdjacentHTML('beforeend', savedImgToHtmlUl(image));//ol element inr savedShowElm
@@ -345,7 +237,6 @@ const imagesModule = (function () {
     }
 
     return {
-        //imgToHtmlCarousel: imgToHtmlCarousel,
         appendImgElem: appendImgElem,
         viewSavedImages: viewSavedImages,
         deleteAllImage: deleteAllImage,
@@ -354,22 +245,8 @@ const imagesModule = (function () {
     };
 })();
 
-//general closer
-(function () {
-    /**
-     * Checks an input element with a validated function, returns whether valid or places a message marked on the input page
-     * @param inputElement - (date,rover or camera)
-     * @param validateFunc - from validatorModule
-     * @returns {boolean|*} if the input is valid
-     */
-    const validateInput = (inputElement, validateFunc) => {
-        let errorElement = inputElement.nextElementSibling; // the error message div
-        let v = validateFunc(inputElement.value.trim()); // call the validation function
-        errorElement.innerHTML = v.isValid ? '' : v.message; // display the error message
-        v.isValid ? inputElement.classList.remove("is-invalid") : inputElement.classList.add("is-invalid");
-        return v.isValid;
-    }
 
+(function () {
     /**
      *Displays general errors on the page, (server communication or no images)
      * @param str - The particular error theorem - assumes str is not null or undefined
@@ -386,11 +263,11 @@ const imagesModule = (function () {
      */
     function baseValidateDate(dateInput) {
         let v1 = false, v2 = false, v3 = false;
-        v1 = validateInput(dateInput, validatorModule.isNotEmpty)
+        v1 = utilitiesModule.validateInput(dateInput, validatorModule.isNotEmpty)
         if (v1)
-            v2 = validateInput(dateInput, validatorModule.hasDateFormat);
+            v2 = utilitiesModule.validateInput(dateInput, validatorModule.hasDateFormat);
         if (v2)
-            v3 = validateInput(dateInput, validatorModule.isDate);
+            v3 = utilitiesModule.validateInput(dateInput, validatorModule.isDate);
         return v1 && v2 && v3;
     }
 
@@ -408,18 +285,6 @@ const imagesModule = (function () {
         return v.isValid;
     }
 
-    /**
-     * Checking communication errors with the server throws an error if the status is incorrect
-     * @param response - promise object received from the server
-     * @returns {Promise<never>|Promise<unknown>} - promise object received or status error
-     */
-    function status(response) {
-        if (response.status >= 200 && response.status < 300) {
-            return Promise.resolve(response)
-        } else {
-            return Promise.reject(new Error(response.statusText))
-        }
-    }
 
     /** Clears: All errors, input markings, and image cards already found */
     const clearAll = () => {
@@ -433,8 +298,6 @@ const imagesModule = (function () {
 
     document.addEventListener('DOMContentLoaded', function () {
         imagesModule.viewSavedImages();
-        //let listManager = new imagesModule.listManager();
-
 
         document.getElementById("clearBtn").addEventListener("click", clearAll);
         document.getElementById("deleteSavesBtn").addEventListener("click", imagesModule.deleteAllImage);
@@ -442,6 +305,9 @@ const imagesModule = (function () {
         document.getElementById("stopSlideBtn").addEventListener("click", imagesModule.stopCarouselImages);
 
         document.getElementById("searchForm").addEventListener("submit", (event) => {
+            const manifestServerError ='NASA servers are not available right now! please try again later';
+            const searchServerError ='NASA servers are not available to searching right now! please try to search again later';
+            const notImages= 'No photos found!';
             clearAll();
             event.preventDefault();
             let imagesShowElm = document.getElementById("imagesShow");
@@ -450,16 +316,18 @@ const imagesModule = (function () {
             let selectCamera = document.getElementById("SelectCameraInput");
             let selectRover = document.getElementById("SelectRoverInput");
             let loadingElm = document.getElementById("loadingGif");
-            let vCamera = validateInput(selectCamera, validatorModule.isNotEmpty);
-            let vRover = validateInput(selectRover, validatorModule.isNotEmpty);
-            if (!(baseValidateDate(dateInput) && vRover)) return; //If there is no ROVER or an incorrect date there is no point in continuing to contact the server For the manifestos
+            let vCamera = utilitiesModule.validateInput(selectCamera, validatorModule.isNotEmpty);
+            let vRover = utilitiesModule.validateInput(selectRover, validatorModule.isNotEmpty);
+            //If there is no ROVER or an incorrect date there is no point in continuing to contact the server For the manifestos,
+            //But if Rover is selected (even if no camera is selected), contact the server for Rover's dates to update a possible error on the entered date.
+            if (!(baseValidateDate(dateInput) && vRover)) return;
             const params = new URLSearchParams();
             params.append('sol', dateInput.value.trim());
             params.append('camera', selectCamera.value);
             params.append('api_key', 'RQq5lNhl9KkkjUMZwqObwLCYrMZOLaAHhd7lRSkN');
             loadingElm.classList.remove('d-none');
             fetch('https://api.nasa.gov/mars-photos/api/v1/manifests/' + selectRover.value + '?api_key=RQq5lNhl9KkkjUMZwqObwLCYrMZOLaAHhd7lRSkN')
-                .then(status)
+                .then(utilitiesModule.status)
                 .then(res => res.json())
                 .then(json => {
                     return {
@@ -470,24 +338,23 @@ const imagesModule = (function () {
                 }).then(manifests => {
                 if (validateManifests(manifests, dateInput) && vCamera) { //Only if the date and also a camera is selected does it make sense to contact the server To search for images
                     fetch('https://api.nasa.gov/mars-photos/api/v1/rovers/' + selectRover.value + '/photos?' + params.toString())
-                        .then(status)
+                        .then(utilitiesModule.status)
                         .then(res => res.json())
                         .then(json => {
-                            //document.querySelector("#data").innerHTML = `Found ${json.collection.metadata.total_hits} images`; // remove the loading message
                             if (json.photos.length > 0)
                                 for (const img of json.photos)
                                     imagesModule.appendImgElem(img, imagesShowElm, savedShowElm);
                             else
-                                generalError('No photos found!');
+                                generalError(notImages);//The error string is a single use, and is sent as a parameter to a function that displays the errors
                         })
                         .catch(function (err) {
-                            generalError('22222NASA servers are not available right now! please try to search again later');
+                            generalError(searchServerError);
                         }).finally(function () {
                     })
                 }
             })
                 .catch(function (err) {
-                    generalError('11111NASA servers are not available right now! please try again later');
+                    generalError(manifestServerError);
                 }).finally(function () {
                 loadingElm.classList.add('d-none');
             })

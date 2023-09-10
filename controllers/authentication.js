@@ -1,88 +1,79 @@
 const db = require('../models');
 
+//Displays the registration page of the user information, with a notification in case it is activated
 exports.getRegister = (req, res) => {
-    //console.log(req.cookies?.ErrorTime);
-    //req.session.registered = undefined;
-    res.render('register', {message: req.cookies?.message});
-    res.cookie('message', '0');
-    res.cookie.save;
+    res.render('register', {message:  req.session.registerMessage});
+    req.session.registerMessage='';//Resetting a message After viewing, the message will disappear when the page is refreshed
+    req.session.save();
 };
 
+//Displays the login page, with a notification in case it was activated
 exports.getLogin = (req, res, next) => {
-    res.cookie('message', '0');//????????????????????????????????????????????????????????
-    console.log('11: ' + req.session.loginMessage);
     res.render('login', {message: req.session.loginMessage});
-    req.session.loginMessage = '';
+    req.session.loginMessage = '';//Resetting a message After viewing, the message will disappear when the page is refreshed
     req.session.save();
-    console.log('14: ' + req.session.loginMessage);
 }
 
-
+//Displays the registration page for entering the password, with the email address on which the password is set
 exports.getPassword = (req, res) => {
-    //console.log(req.session.registered);
     res.render('password', {email: req.session.email});
 }
 
+//Sending the password and other details of the registrant, for registration in the database. In the event of a time error or duplication of the email (another user has already registered at this address while registering),
+// the registration page will be returned with the appropriate message.
+// In case there are no errors the user information is registered in the database, and is redirected to the login page with a message that the registration was successful
 exports.postPassword = (req, res) => {
-    let onTime = req.cookies?.LoginProcess;//cookies.get('LoginProcess', {signed: true});
-    console.log('time: ' + onTime);
-    if (!onTime) {
-        res.cookie('message', '1');
+    if (!req.cookies?.LoginProcess) {
+        req.session.registerMessage='timeError';
         return res.redirect('/register');
-    }//render('register', {onTime: false});
+    }
     let theEmail = req.session.email;
+    let thePassword= req.body.thePassword.trim();
+    //Server side validation
+    if(!thePassword.length >= 8 || !/^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/.test(theEmail)) {
+        req.session.registerMessage = 'inputError';
+        return res.redirect('/register');
+    }
     return db.User.findOne({
         where: {email: theEmail},
         attributes: ['email']
     }).then((email) => {
         if (email === null) {
-            console.log('free: true, ' + email);
             return db.User.create({
                 firstName: req.session.firstName,
                 lastName: req.session.lastName,
-                password: req.body.thePassword.trim(),
+                password: thePassword,
                 email: theEmail
             })
-                .then((contact) => {
-                    console.log('**** user crated!');
+                .then(() => {
                     req.session.loginMessage = 'registered';
                     res.redirect('/login');
-                    //req.session.registered = false;
-                    console.log('49: ' + req.session.loginMessage);
                 })
                 .catch((err) => {
-                    console.log('***There was an error creating a user', JSON.stringify(contact));
-                    return res.redirect('/');
+                    return res.redirect('/register');//In the event of a database access error, the user will be redirected to the re-registration page.
                 })
-
         } else {
-            console.log('**** the email already busy!');
-            res.cookie('message', '2');
+            req.session.registerMessage='emailError';
             return res.redirect('/register');
         }
-
-    }).catch((err) => {
-        console.log('****Failed to check email duplication number 2', JSON.stringify(err));
-        err.error = 1; // some error code for client side
-        return res.send(err)
+    }).catch((err) => {//
+        return res.redirect('/register');//In the event of a database access error, the user will be redirected to the re-registration page.
     });
 }
 
-
+//Sending the email and password to check when logging in. In case the details exist and match, all the details will be recorded in the session, and the user will be directed to the main page of the site.
+// If there is an error in the data, the user will be redirected to the login page with the error message
 exports.postLogin = (req, res) => {
     let theEmail= req.body.email.trim();
     let thePassword= req.body.password.trim();
     return db.User.findOne({
         where: {email: theEmail},
-        //attributes: ['email','password']
     }).then((user) => {
         if (user?.email==theEmail && user?.password==thePassword) {
-            console.log('****user exist: true, ' + user.firstName+" "+user.lastName);
             req.session.isLogged=true;
             req.session.email=user.email;
             req.session.firstName = user.firstName;
             req.session.lastName = user.lastName;
-            //req.session.save();
             res.redirect('/logged/marsBrowser');
             }
         else{
@@ -90,5 +81,7 @@ exports.postLogin = (req, res) => {
             req.session.loginMessage = 'errorLoginDetails';
             res.redirect('/login');
         }
-        }).catch()
+        }).catch((err) => {
+        return res.redirect('/login');//In the event of a database access error, the user will be redirected to the login page.
+    });
 };
