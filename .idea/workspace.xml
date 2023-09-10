@@ -1,32 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b59cf5a1-0de8-4ac6-b0c9-387ecde373bc" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/MarsImages.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/www.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebstormProjects - Shortcut.lnk" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/javascripts/generalFuncts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ex4-nodejs.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/authentication.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/authentication.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/marsBrowser.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/marsBrowser.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/http.log" beforeDir="false" afterPath="$PROJECT_DIR$/http.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/javascripts/authenticationFuncs.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/javascripts/authenticationFuncs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/javascripts/marsBrowserFunc.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/javascripts/marsBrowserFuncs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/authentication.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/authentication.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/login.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/login.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/marsBrowser.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/marsBrowser.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/password.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/password.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/register.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/register.ejs" afterDir="false" />
-    </list>
+    <list default="true" id="b59cf5a1-0de8-4ac6-b0c9-387ecde373bc" name="Changes" comment="Commit initialization" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -72,11 +47,33 @@
       <option name="presentableId" value="Default" />
       <updated>1693102625894</updated>
       <workItem from="1693102627779" duration="3250000" />
-      <workItem from="1694305588133" duration="1575000" />
+      <workItem from="1694305588133" duration="1946000" />
     </task>
+    <task id="LOCAL‎00001" summary="Commit initialization">
+      <created>1694307529368</created>
+      <option name="number" value="LOCAL‎00001" />
+      <option name="presentableId" value="LOCAL‎00001" />
+      <updated>1694307529368</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Commit initialization" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit initialization" />
   </component>
 </project>
