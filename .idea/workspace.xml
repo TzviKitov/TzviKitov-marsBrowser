@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b59cf5a1-0de8-4ac6-b0c9-387ecde373bc" name="Changes" comment="Commit app">
-      <change afterPath="$PROJECT_DIR$/ Procfile" afterDir="false" />
+    <list default="true" id="b59cf5a1-0de8-4ac6-b0c9-387ecde373bc" name="Changes" comment="Commit json">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/http.log" beforeDir="false" afterPath="$PROJECT_DIR$/http.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +50,7 @@
       <updated>1693102625894</updated>
       <workItem from="1693102627779" duration="3250000" />
       <workItem from="1694305588133" duration="2699000" />
-      <workItem from="1695748466982" duration="2373000" />
+      <workItem from="1695748466982" duration="3303000" />
     </task>
     <task id="LOCAL‎00001" summary="Commit initialization">
       <created>1694307529368</created>
@@ -78,7 +76,19 @@
       <option name="presentableId" value="LOCAL‎00004" />
       <updated>1695750346147</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL‎00005" summary="Commit Procfile">
+      <created>1695750917883</created>
+      <option name="number" value="LOCAL‎00005" />
+      <option name="presentableId" value="LOCAL‎00005" />
+      <updated>1695750917883</updated>
+    </task>
+    <task id="LOCAL‎00006" summary="Commit json">
+      <created>1695751007119</created>
+      <option name="number" value="LOCAL‎00006" />
+      <option name="presentableId" value="LOCAL‎00006" />
+      <updated>1695751007119</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -99,6 +109,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Commit initialization" />
     <MESSAGE value="Commit app" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit app" />
+    <MESSAGE value="Commit Procfile" />
+    <MESSAGE value="Commit json" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit json" />
   </component>
 </project>
