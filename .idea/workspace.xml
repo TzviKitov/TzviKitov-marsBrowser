@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b59cf5a1-0de8-4ac6-b0c9-387ecde373bc" name="Changes" comment="Commit initialization" />
+    <list default="true" id="b59cf5a1-0de8-4ac6-b0c9-387ecde373bc" name="Changes" comment="Commit app">
+      <change afterPath="$PROJECT_DIR$/ Procfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/http.log" beforeDir="false" afterPath="$PROJECT_DIR$/http.log" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,7 +51,8 @@
       <option name="presentableId" value="Default" />
       <updated>1693102625894</updated>
       <workItem from="1693102627779" duration="3250000" />
-      <workItem from="1694305588133" duration="1946000" />
+      <workItem from="1694305588133" duration="2699000" />
+      <workItem from="1695748466982" duration="2373000" />
     </task>
     <task id="LOCAL‎00001" summary="Commit initialization">
       <created>1694307529368</created>
@@ -55,7 +60,25 @@
       <option name="presentableId" value="LOCAL‎00001" />
       <updated>1694307529368</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL‎00002" summary="Commit initialization">
+      <created>1694307648678</created>
+      <option name="number" value="LOCAL‎00002" />
+      <option name="presentableId" value="LOCAL‎00002" />
+      <updated>1694307648678</updated>
+    </task>
+    <task id="LOCAL‎00003" summary="Commit initialization">
+      <created>1695749921427</created>
+      <option name="number" value="LOCAL‎00003" />
+      <option name="presentableId" value="LOCAL‎00003" />
+      <updated>1695749921427</updated>
+    </task>
+    <task id="LOCAL‎00004" summary="Commit app">
+      <created>1695750346147</created>
+      <option name="number" value="LOCAL‎00004" />
+      <option name="presentableId" value="LOCAL‎00004" />
+      <updated>1695750346147</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -71,9 +94,11 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Commit initialization" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit initialization" />
+    <MESSAGE value="Commit app" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit app" />
   </component>
 </project>
