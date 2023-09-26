@@ -16,6 +16,10 @@ var app = express();
 
 var fs = require('fs')
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'http.log'), {flags: 'a'})
+
+var port = process.env.PORT || 3000;
+app.listen(port);
+
 app.use(logger('combined', {stream: accessLogStream}));
 
 app.use(cookieParser());
