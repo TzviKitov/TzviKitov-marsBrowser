@@ -2,7 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b59cf5a1-0de8-4ac6-b0c9-387ecde373bc" name="Changes" comment="Commit json">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/http.log" beforeDir="false" afterPath="$PROJECT_DIR$/http.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/login.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/login.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/marsBrowser.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/marsBrowser.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/password.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/password.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/register.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/register.ejs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +30,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/bin/www" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager" selected="Node.js.www">
@@ -51,6 +58,7 @@
       <workItem from="1693102627779" duration="3250000" />
       <workItem from="1694305588133" duration="2699000" />
       <workItem from="1695748466982" duration="3303000" />
+      <workItem from="1707309660136" duration="2243000" />
     </task>
     <task id="LOCAL‎00001" summary="Commit initialization">
       <created>1694307529368</created>

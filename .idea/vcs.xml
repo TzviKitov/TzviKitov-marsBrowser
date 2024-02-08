@@ -3,5 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Mars-Images" vcs="Git" />
+    <mapping directory="gh repo clone TzviKitov/TzviKitov-marsBrowser" vcs="" />
   </component>
 </project>
